@@ -336,7 +336,7 @@ li::before { content: "▪"; color: var(--magma-orange); font-size: 1.2em; posit
 .log-entry.active .log-icon { transform: rotate(45deg); }
 
 .log-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out, padding 0.4s ease, opacity 0.4s ease; opacity: 0; background: #fff; }
-.log-entry.active .log-body { max-height: 800px; opacity: 1; padding: 25px 20px; }
+.log-entry.active .log-body { max-height: 80vh; opacity: 1; padding: 25px 20px; overflow-y:auto;}
 
 .log-date { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed var(--ice-blue); }
 .log-content { font-size: 0.95rem; line-height: 1.7; color: #4b5563; }
@@ -414,4 +414,13 @@ li::before { content: "▪"; color: var(--magma-orange); font-size: 1.2em; posit
         stroke: var(--sky-blue); 
         fill: #fafafa; /* Solid Background */
     }
+}
+
+.log-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin: 20px 0;
+    border: 1px solid var(--border-line);
+    display: block;
 }

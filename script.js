@@ -18,7 +18,6 @@ function initVisitorCounter() {
                 return res.json();
             })
             .then(data => {
-                // Check if data.count exists, otherwise default to 0
                 const count = data.count || 0;
                 animateValue(counterElement, 0, count, DURATION);
             })
@@ -64,6 +63,27 @@ function switchTab(tabName) {
     }
 }
 
+// --- OPEN SPECIFIC POST (DEEP LINKING) ---
+function openPost(id) {
+    // 1. Switch to the blog tab
+    switchTab('blog');
+
+    // 2. Find the specific post element
+    const targetPost = document.getElementById(`post-${id}`);
+    
+    if (targetPost) {
+        // 3. Open it (if not already open)
+        if (!targetPost.classList.contains('active')) {
+            targetPost.classList.add('active');
+        }
+        
+        // 4. Scroll to it smoothly
+        setTimeout(() => {
+            targetPost.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    }
+}
+
 // --- ACCORDION BLOG LOADER ---
 function loadBlogPosts() {
     const blogContainer = document.getElementById("blog-feed-container");
@@ -71,7 +91,7 @@ function loadBlogPosts() {
         .then(response => response.json())
         .then(posts => {
             blogContainer.innerHTML = "";
-            posts.forEach((post, index) => {
+            posts.forEach((post) => {
                 let imageHTML = "";
                 if (post.image) {
                     imageHTML = `
@@ -85,7 +105,9 @@ function loadBlogPosts() {
                 const article = document.createElement("div");
                 article.className = "log-entry";
                 
-                // Toggle active class on click for Accordion effect
+                // NEW: Assign a unique ID to each post so we can find it later
+                article.id = `post-${post.id}`;
+                
                 article.onclick = function() {
                     this.classList.toggle("active");
                 };
@@ -103,8 +125,16 @@ function loadBlogPosts() {
                 `;
                 blogContainer.appendChild(article);
             });
+
+            // NEW: Check URL for ?post=ID and open it automatically
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('post');
+            if (postId) {
+                openPost(postId);
+            }
         })
         .catch(error => {
+            console.error(error);
             blogContainer.innerHTML = "<p>Trail not found (json load error).</p>";
         });
 }
@@ -124,9 +154,11 @@ function loadSidebarPosts() {
             recent.forEach(post => {
                 const item = document.createElement("div");
                 item.className = "recent-entry";
+                
+                // NEW: Updated onclick to call openPost(id)
                 item.innerHTML = `
                     <div class="recent-marker"></div>
-                    <a href="#" onclick="switchTab('blog'); return false;" class="recent-link">
+                    <a href="#" onclick="openPost(${post.id}); return false;" class="recent-link">
                         ${post.title}
                     </a>
                 `;
@@ -138,22 +170,23 @@ function loadSidebarPosts() {
         });
 }
 
-// --- MODAL CONTROLS (Updated for Transitions) ---
+// --- MODAL CONTROLS ---
 function toggleModal() {
     const modal = document.getElementById("sys-modal");
     if (!modal.classList.contains("show")) {
-        // OPEN
         modal.style.display = "flex";
-        // Fill data
         const count = document.getElementById("counter-display").innerText;
-        document.getElementById("modal-count-display").innerText = count;
         
-        // Small delay to allow display:flex to apply
+        // Safety check if the element exists before trying to set it
+        const modalCountDisplay = document.getElementById("modal-count-display");
+        if (modalCountDisplay) {
+            modalCountDisplay.innerText = count;
+        }
+
         setTimeout(() => {
             modal.classList.add("show");
         }, 10);
     } else {
-        // CLOSE
         closeModal();
     }
 }
@@ -164,6 +197,6 @@ function closeModal(e) {
         modal.classList.remove("show");
         setTimeout(() => {
             modal.style.display = "none";
-        }, 400); // Match CSS transition time
+        }, 400); 
     }
 }
