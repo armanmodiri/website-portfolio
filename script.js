@@ -13,11 +13,19 @@ function initVisitorCounter() {
 
     if (isProd) {
         fetch(AZURE_FUNCTION_URL)
-            .then(res => res.json())
-            .then(data => {
-                animateValue(counterElement, 0, data.count, DURATION);
+            .then(res => {
+                if (!res.ok) throw new Error("API Response not OK");
+                return res.json();
             })
-            .catch(() => counterElement.innerText = "ERR");
+            .then(data => {
+                // Check if data.count exists, otherwise default to 0
+                const count = data.count || 0;
+                animateValue(counterElement, 0, count, DURATION);
+            })
+            .catch((e) => {
+                console.error("Counter Error:", e);
+                counterElement.innerText = "ERR";
+            });
     } else {
         setTimeout(() => {
             animateValue(counterElement, 0, 1204, DURATION);
