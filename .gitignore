@@ -2,7 +2,7 @@
 bin
 obj
 extensions.json
-local.settings.json
+api/local.settings.json
 
 # Python artifacts
 __pycache__/

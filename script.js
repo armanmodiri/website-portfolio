@@ -7,8 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
 // --- VISITOR COUNTER ---
 function initVisitorCounter() {
     const counterElement = document.getElementById("counter-display");
-    const AZURE_FUNCTION_URL = "YOUR_API_URL_HERE";
-    const isProd = false; 
+    const AZURE_FUNCTION_URL = "/api/GetVisitorCount";
+    const isProd = true; 
     const DURATION = 2000; 
 
     if (isProd) {
