@@ -77,9 +77,16 @@ function openPost(id) {
             targetPost.classList.add('active');
         }
         
-        // 4. Scroll to it smoothly
+        // 4. Scroll with OFFSET (The Fix)
         setTimeout(() => {
-            targetPost.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const headerOffset = 80; // Breathing room (px)
+            const elementPosition = targetPost.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.scrollY - headerOffset;
+        
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+            });
         }, 100);
     }
 }

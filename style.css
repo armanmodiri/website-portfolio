@@ -189,7 +189,8 @@ body {
 
 /* RESUME CONTAINER */
 .resume-container { 
-    max-width: 850px; 
+    max-width: 1200px; /* WAS 850px - This widens the page */
+    width: 95%;        /* Ensures it looks good on smaller laptops too */
     margin: 0 auto; 
     padding: 70px; 
     background: white; 
