@@ -1,0 +1,14 @@
+# Azure Functions artifacts
+bin
+obj
+extensions.json
+local.settings.json  <-- THIS IS THE MOST IMPORTANT LINE
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.python_version
+.venv/
+env/
+venv/
