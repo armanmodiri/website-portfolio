@@ -147,7 +147,7 @@
                                         <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="#3498db" stroke-width="2" stroke-linejoin="round"/>
                                     </svg>
                                     <div class="infra-text">
-                                        <span class="svc-name">Azure Functions</span>
+                                        <span class="svc-name">Azure Environment Variables</span>
                                         <span class="svc-detail">API (Python)</span>
                                     </div>
                                 </div>
@@ -355,7 +355,7 @@
                                 <path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/>
                             </svg>
                         </div>
-                        <p><strong>Client Request:</strong> User loads the webpage via Azure Static Web Apps (Edge).</p>
+                        <p><strong>Client Request:</strong> User loads the webpage via Azure Static Web Apps</p>
                     </div>
                     <div class="diagram-arrow">↓</div>
                     <div class="diagram-step">
@@ -365,7 +365,7 @@
                                 <path d="M12 20 L16 4 L20 20 M15 14 H19 M4 20 L10 12" stroke-linejoin="round" />
                             </svg>
                         </div>
-                        <p><strong>API Trigger:</strong> JS fetches <code>/api/GetVisitorCount</code> (Azure Functions Python v2).</p>
+                        <p><strong>API Trigger:</strong> JS fetches <code>/api/GetVisitorCount</code> (Azure SWA Environment Variables - Python 3.11)</p>
                     </div>
                     <div class="diagram-arrow">↓</div>
                     <div class="diagram-step">
@@ -376,22 +376,29 @@
                                 <path d="M2 12C2 14.5 6.5 16.5 12 16.5C17.5 16.5 22 14.5 22 12"></path>
                             </svg>
                         </div>
-                        <p><strong>Database:</strong> Function reads/updates entity in Azure Cosmos DB (Table API).</p>
+                        <p><strong>Database:</strong> Function reads/updates entity in Azure Cosmos DB (Table API)</p>
                     </div>
                 </div>
 
                 <div class="modal-code">
-                    <code>
-                        {<br>
-                        &nbsp;&nbsp;"id": "visitor-counter",<br>
-                        &nbsp;&nbsp;"partitionKey": "site-stats",<br>
-                        &nbsp;&nbsp;"count": <span id="modal-count-display">...</span><br>
-                        }
-                    </code>
+                   <code>
+        <span style="color: #6a9955;"># 1. Connect & Get Entity</span><br>
+        entity = table_client.get_entity(<span style="color: #ce9178;">"site-stats"</span>, <span style="color: #ce9178;">"visitor-counter"</span>)<br>
+        <br>
+        <span style="color: #6a9955;"># 2. Increment</span><br>
+        new_count = entity[<span style="color: #ce9178;">"count"</span>] + <span style="color: #b5cea8;">1</span><br>
+        entity[<span style="color: #ce9178;">"count"</span>] = new_count<br>
+        <br>
+        <span style="color: #6a9955;"># 3. Update DB & Return</span><br>
+        table_client.update_entity(entity)<br>
+        <br>
+        response_body = { <span style="color: #ce9178;">"count"</span>: <span id="modal-count-display" style="color: #b5cea8;">new_count</span> }<br>
+        <span style="color: #569cd6;">return</span> func.HttpResponse(json.dumps(response_body))
+    </code>
                 </div>
                 
                 <p class="modal-footer-note">
-                    Infrastructure defined via Azure Resource Manager (ARM) templates and deployed via GitHub Actions.
+                    Infrastructure built using Google AI Studio and deployed via GitHub Actions.
                 </p>
             </div>
         </div>
