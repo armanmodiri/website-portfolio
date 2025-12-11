@@ -441,3 +441,31 @@ li {
     border: 1px solid var(--border-line);
     display: block;
 }
+
+/* --- MOBILE MODAL FIXES --- */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;          /* Fit within the screen width */
+        max-height: 85vh;    /* Leave room for browser bars */
+        margin: 10% auto;    /* Center it vertically */
+        padding: 20px;       /* Reduce padding so content fits */
+        overflow-y: auto;    /* Enable scrolling INSIDE the modal */
+    }
+
+    .modal-header {
+        flex-direction: row; /* Keep title and close button side-by-side */
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .close-btn {
+        font-size: 2rem;     /* Make the X easy to tap */
+        padding: 10px;       /* Increase tap target size */
+        margin-left: 10px;   /* Ensure it doesn't overlap text */
+    }
+
+    .modal-code {
+        font-size: 0.8rem;   /* Shrink code text slightly for mobile */
+        overflow-x: auto;    /* Allow code to scroll sideways */
+    }
+}
