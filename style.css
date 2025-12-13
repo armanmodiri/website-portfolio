@@ -240,8 +240,8 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;       /* Changed to 100vw to be explicit */
+    height: 100dvh;     /* <--- THE FIX: Dynamic Viewport Height */
     background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -249,11 +249,8 @@ body {
     align-items: center;
     justify-content: center;
     overscroll-behavior: contain;
-    
-    /* ADD/UPDATE THIS LINE: Faster transition (0.2s) */
     transition: opacity 0.2s ease, visibility 0.2s ease;
-    
-    opacity: 0; /* ensure it starts invisible so it can fade in */
+    opacity: 0;
 }
 
 /* Ensure the 'show' class matches the speed */
