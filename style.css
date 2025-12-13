@@ -235,24 +235,31 @@ body {
 .alt-icon { font-size: 0.8rem; color: var(--magma-orange); }
 #counter-display { font-size: 1.4rem; font-weight: 700; color: var(--slate-text); line-height: 1; }
 
-/* MODAL */
 .modal-backdrop {
-    display: none; /* Hidden by default */
-    position: fixed; /* CRITICAL: Locks it to the viewport */
+    display: none;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; /* Covers the whole screen */
-    background: rgba(255, 255, 255, 0.4); /* Glass effect */
+    height: 100%;
+    background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    z-index: 1000; /* Stays on top of everything */
+    z-index: 1000;
     align-items: center;
     justify-content: center;
-    overscroll-behavior: contain; /* Prevents scroll chaining to body */
+    overscroll-behavior: contain;
+    
+    /* ADD/UPDATE THIS LINE: Faster transition (0.2s) */
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    
+    opacity: 0; /* ensure it starts invisible so it can fade in */
 }
 
-.modal-backdrop.show { opacity: 1; visibility: visible; pointer-events: auto; }
+/* Ensure the 'show' class matches the speed */
+.modal-backdrop.show {
+    opacity: 1;
+}
 
 .modal-content { 
     background: #fff; width: 90%; max-width: 500px; border-radius: 2px; 
@@ -475,5 +482,22 @@ li {
     .modal-code {
         font-size: 0.8rem;   /* Shrink code text slightly for mobile */
         overflow-x: auto;    /* Allow code to scroll sideways */
+    }
+}
+
+@media (max-width: 600px) {
+    /* Target the specific headers in the resume */
+    .role-block .entry-header {
+        flex-direction: column; /* Stack items vertically */
+        align-items: flex-start; /* Align both to the left */
+        gap: 2px; /* Small space between Title and Date */
+    }
+
+    /* Make the date slightly smaller and grey so it looks like a subtitle */
+    .role-block .date-tag {
+        font-size: 0.85rem;
+        color: #666;
+        margin-left: 0; /* Remove any previous left margins */
+        font-weight: normal;
     }
 }

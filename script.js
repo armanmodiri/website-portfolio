@@ -180,11 +180,15 @@ function loadSidebarPosts() {
 // --- MODAL CONTROLS ---
 function toggleModal() {
     const modal = document.getElementById("sys-modal");
+    
     if (!modal.classList.contains("show")) {
+        // OPEN MODAL
         modal.style.display = "flex";
-        const count = document.getElementById("counter-display").innerText;
         
-        // Safety check if the element exists before trying to set it
+        // 1. FREEZE BACKGROUND SCROLLING
+        document.body.style.overflow = "hidden"; 
+        
+        const count = document.getElementById("counter-display").innerText;
         const modalCountDisplay = document.getElementById("modal-count-display");
         if (modalCountDisplay) {
             modalCountDisplay.innerText = count;
@@ -199,11 +203,17 @@ function toggleModal() {
 }
 
 function closeModal(e) {
-    if (!e || e.target.className === "modal-backdrop" || e.target.className === "close-btn") {
-        const modal = document.getElementById("sys-modal");
-        modal.classList.remove("show");
-        setTimeout(() => {
-            modal.style.display = "none";
-        }, 400); 
+    if (e && e.target.className !== "modal-backdrop" && e.target.className !== "close-btn") {
+        return; 
     }
+
+    const modal = document.getElementById("sys-modal");
+    modal.classList.remove("show");
+    
+    document.body.style.overflow = ""; 
+
+    // CHANGE THIS: 400 -> 200
+    setTimeout(() => {
+        modal.style.display = "none";
+    }, 200); 
 }
