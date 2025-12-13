@@ -34,7 +34,6 @@ body {
     font-family: 'Inter', sans-serif;
     color: var(--slate-text);
     min-height: 100vh;
-    /* overflow properties handled in html, body block above */
     display: flex;
     line-height: 1.5;
     background-color: var(--carbon-bg);
@@ -90,31 +89,29 @@ body {
     border-radius: 2px; 
     text-decoration: none; 
     transition: all 0.2s ease; 
-    gap: 15px; /* Spacing between Label and Data */
+    gap: 15px; 
 }
 
 .comm-row:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--magma-orange); transform: translateX(4px); }
 
-/* Left Side: Label */
 .comm-label {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.6rem;
     text-transform: uppercase;
     color: var(--magma-orange);
     letter-spacing: 0.5px;
-    width: 110px; /* Fixed width */
+    width: 110px; 
     flex-shrink: 0;
-    border-right: 1px solid var(--border-line); /* Internal divider */
+    border-right: 1px solid var(--border-line); 
     padding-right: 10px;
 }
 
-/* Right Side: Data Group (FIX: Flex Shrink & Wrapping) */
 .comm-data {
     display: flex;
     align-items: center;
     gap: 8px;
     flex-grow: 1;
-    min-width: 0; /* Allows shrinking past content */
+    min-width: 0; 
 }
 
 .comm-icon { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
@@ -124,7 +121,6 @@ body {
     font-size: 0.8rem; 
     color: #ecf0f1; 
     flex-grow: 1; 
-    /* Force wrapping */
     white-space: normal;
     overflow-wrap: break-word;
     word-break: break-word;
@@ -196,8 +192,8 @@ body {
 
 /* RESUME CONTAINER */
 .resume-container { 
-    max-width: 1200px; /* WAS 850px - This widens the page */
-    width: 95%;        /* Ensures it looks good on smaller laptops too */
+    max-width: 1200px; 
+    width: 95%;        
     margin: 0 auto; 
     padding: 70px; 
     background: white; 
@@ -224,7 +220,7 @@ body {
     position: relative; 
     transition: transform 0.2s, box-shadow 0.2s; 
     display: flex; 
-    flex-direction: row !important; /* FORCE ROW */
+    flex-direction: row !important; 
     align-items: flex-end; 
     gap: 15px; 
     background: #fafafa; 
@@ -244,16 +240,15 @@ body {
 
 .modal-backdrop {
     display: none;
-    position: fixed; /* Must be fixed */
+    position: fixed; 
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    /* Remove height: 100dvh or 100% - let top/bottom handle it */
     background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    z-index: 9999; /* Ensure it is higher than everything else */
+    z-index: 9999; 
     align-items: center;
     justify-content: center;
     overscroll-behavior: contain;
@@ -261,10 +256,7 @@ body {
     opacity: 0;
 }
 
-/* Ensure the 'show' class matches the speed */
-.modal-backdrop.show {
-    opacity: 1;
-}
+.modal-backdrop.show { opacity: 1; }
 
 .modal-content { 
     background: #fff; width: 90%; max-width: 500px; border-radius: 2px; 
@@ -282,7 +274,6 @@ body {
 .modal-intro { font-size: 0.9rem; margin-bottom: 20px; line-height: 1.5; }
 .modal-diagram { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
 
-/* DIAGRAM STEP UPDATES for Icons */
 .diagram-step { 
     background: var(--ice-blue); padding: 10px; border-radius: 2px; 
     font-size: 0.85rem; display: flex; gap: 15px; align-items: center; 
@@ -311,24 +302,9 @@ body {
 .role-title { font-weight: 600; font-size: 1rem; color: #2d3748; }
 .date-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; background: #edf2f7; padding: 2px 6px; border-radius: 2px; color: #4a5568; }
 
-ul { 
-    padding-left: 20px;
-    list-style: square;          /* Standard Square shape */
-    margin-top: 8px; 
-}
-
-/* This colors the dot ORANGE */
-li::marker {
-    color: var(--magma-orange);
-    font-size: 1.2em;         /* Make the dot slightly bigger */
-}
-
-li { 
-    margin-bottom: 8px; 
-    font-size: 0.95rem; 
-    color: #4b5563; 
-}
-
+ul { padding-left: 20px; list-style: square; margin-top: 8px; }
+li::marker { color: var(--magma-orange); font-size: 1.2em; }
+li { margin-bottom: 8px; font-size: 0.95rem; color: #4b5563; }
 .divider { border: 0; border-top: 1px dashed var(--ice-blue); margin: 40px 0; }
 
 /* RESPONSIVE */
@@ -339,8 +315,6 @@ li {
     .right-col { width: 100%; min-height: auto; }
     .resume-container { padding: 50px 40px; }
     .crag-card { margin-top: 40px; margin-bottom: 0; }
-    
-    /* FIX: Hide the rope system on mobile */
     .descent-schematic { display: none; }
 }
 
@@ -360,17 +334,82 @@ li {
 
 .log-entry { border: 1px solid var(--ice-blue); border-radius: 2px; overflow: hidden; transition: all 0.3s ease; background: #ffffff; }
 
+/* --- [IMPORTANT] HEADER FIX --- 
+   Using !important to guarantee layout forces separation 
+*/
 .log-header {
-    background: #fcfcfc; padding: 15px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
-    border-left: 3px solid transparent; transition: background 0.2s, border-color 0.2s;
+    background: #fcfcfc; 
+    /* UPDATED PADDING: Increased right padding to 35px to keep button off scrollbar */
+    padding: 15px 20px 15px 35px; 
+    cursor: pointer; 
+    
+    /* FLEXBOX LAYOUT ENFORCEMENT */
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100%;
+    
+    border-left: 3px solid transparent; 
+    transition: background 0.2s, border-color 0.2s;
 }
 
 .log-entry:hover .log-header { background: #f0f2f5; border-left-color: var(--sky-blue); }
 .log-title { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.9rem; color: var(--slate-text); }
-.log-icon { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--magma-orange); transition: transform 0.3s ease; font-size: 1.1rem; line-height: 1; }
 
+/* --- ICON & BUTTON STYLES (UPDATED) --- */
+
+/* 1. The container for the button/icon */
+.log-icon {
+    color: var(--magma-orange);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    min-width: 30px; /* Essential to prevent crushing */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+/* 2. THE ACTIVE "CLOSE ENTRY" BUTTON */
+.log-icon.close-btn-graphic {
+    background-color: #d9534f;          /* Red Background */
+    color: white !important;
+    padding: 6px 15px;
+    
+    /* SHAPE: Rounded Rectangle */
+    border-radius: 6px;                 
+    
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    
+    /* Force dimensions */
+    width: auto !important;             
+    height: auto !important;
+    
+    /* POSITIONING: Pushes the button 50px away from the right edge */
+    margin-right: 13px !important; 
+    
+    /* Space between title and button */
+    margin-left: 10px;                  
+}
+
+.log-icon.close-btn-graphic:hover {
+    background-color: #c9302c;
+    transform: scale(1.05);
+}
+
+.btn-x {
+    font-size: 1.2rem;
+    margin-left: 5px;
+    line-height: 1;
+}
+
+/* Active Logic */
 .log-entry.active .log-header { background: #f0f2f5; border-bottom: 1px solid var(--ice-blue); border-left-color: var(--magma-orange); }
-.log-entry.active .log-icon { transform: rotate(45deg); }
 
 .log-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out, padding 0.4s ease, opacity 0.4s ease; opacity: 0; background: #fff; }
 .log-entry.active .log-body { max-height: 80vh; opacity: 1; padding: 25px 20px; overflow-y:auto;}
@@ -378,79 +417,79 @@ li {
 .log-date { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed var(--ice-blue); }
 .log-content { font-size: 0.95rem; line-height: 1.7; color: #4b5563; }
 
-/* --- FULL CYCLE API ANIMATION (Client -> Server -> DB -> Client) --- */
-.net-path {
-    stroke: var(--ice-blue);
-    stroke-width: 2;
-    stroke-linecap: round;
+/* When active, the post becomes a full-screen overlay */
+.log-entry.active {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh; 
+    z-index: 5000;  
+    background: #fff;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
 }
 
-.node-icon {
-    fill: #fafafa;
-    stroke: var(--sky-blue);
-    stroke-width: 2;
-    transition: all 0.2s ease;
+/* Header stays stuck to the top */
+.log-entry.active .log-header {
+    background: var(--carbon-bg); 
+    color: #fff;
+    flex-shrink: 0; 
+    padding: 20px;
+    border-bottom: 2px solid var(--magma-orange);
 }
 
-.packet-dot {
-    fill: var(--magma-orange);
-    /* 6s Duration */
-    animation: fullRequestCycle 6s linear infinite;
+.log-entry.active .log-title {
+    color: #fff;
+    font-size: 1rem;
 }
 
-/* 1. Packet Movement */
+.log-entry.active .log-body {
+    flex-grow: 1;
+    max-height: none; 
+    opacity: 1;
+    overflow-y: auto; 
+    padding: 30px 20px 80px 20px; 
+    -webkit-overflow-scrolling: touch; 
+}
+
+/* --- FULL CYCLE API ANIMATION --- */
+.net-path { stroke: var(--ice-blue); stroke-width: 2; stroke-linecap: round; }
+.node-icon { fill: #fafafa; stroke: var(--sky-blue); stroke-width: 2; transition: all 0.2s ease; }
+.packet-dot { fill: var(--magma-orange); animation: fullRequestCycle 6s linear infinite; }
+
 @keyframes fullRequestCycle {
     0%   { cx: 12px; }
     25%  { cx: 60px; }
-    50%  { cx: 108px; } /* Hits DB */
+    50%  { cx: 108px; } 
     75%  { cx: 60px; }
-    100% { cx: 12px; } /* Return */
+    100% { cx: 12px; } 
 }
 
-/* 2. Client Pulse */
-#node-client {
-    animation: clientPulse 6s linear infinite;
-}
-
+#node-client { animation: clientPulse 6s linear infinite; }
 @keyframes clientPulse {
     0%, 5% { stroke: var(--magma-orange); stroke-width: 2px; }
     10%, 90% { stroke: var(--sky-blue); stroke-width: 2px; }
     95%, 100% { stroke: var(--magma-orange); stroke-width: 2px; }
 }
 
-/* 3. Server Pulse */
-#node-server {
-    animation: serverPulse 6s linear infinite;
-}
-
+#node-server { animation: serverPulse 6s linear infinite; }
 @keyframes serverPulse {
     0%, 20% { stroke: var(--sky-blue); }
-    25% { stroke: var(--magma-orange); stroke-width: 2px; } /* Pass 1 */
+    25% { stroke: var(--magma-orange); stroke-width: 2px; } 
     30%, 70% { stroke: var(--sky-blue); }
-    75% { stroke: var(--magma-orange); stroke-width: 2px; } /* Pass 2 */
+    75% { stroke: var(--magma-orange); stroke-width: 2px; } 
     80%, 100% { stroke: var(--sky-blue); }
 }
 
-/* 4. DB Pulse - UPDATED: Using SOLID OPAQUE COLORS to ensure masking works */
-#node-db {
-    animation: dbUpdatePulse 6s linear infinite;
-}
-
+#node-db { animation: dbUpdatePulse 6s linear infinite; }
 @keyframes dbUpdatePulse {
-    0%, 45% { 
-        stroke: var(--sky-blue); 
-        fill: #fafafa; /* Solid Background */
-    }
-    
-    50% { 
-        stroke: var(--magma-orange); 
-        fill: #fff0e6; /* Solid Pale Orange - OPAQUE */
-    } 
-    
-    55%, 100% { 
-        stroke: var(--sky-blue); 
-        fill: #fafafa; /* Solid Background */
-    }
+    0%, 45% { stroke: var(--sky-blue); fill: #fafafa; }
+    50% { stroke: var(--magma-orange); fill: #fff0e6; } 
+    55%, 100% { stroke: var(--sky-blue); fill: #fafafa; }
 }
 
 .log-content img {
@@ -462,33 +501,15 @@ li {
     display: block;
 }
 
-/* --- MOBILE RESUME HEADER FIX (POLISHED) --- */
+/* --- MOBILE RESUME & LIST POLISH --- */
 @media (max-width: 600px) {
-    /* 1. Stack them vertically */
-    .role-block .entry-header {
-        flex-direction: column; 
-        align-items: flex-start;
-        gap: 4px; /* Give it slight breathing room */
-        margin-bottom: 8px; /* Push the bullet points down slightly */
-    }
-
-    /* 2. REMOVE the "Boxy" look for the date */
-    .role-block .date-tag {
-        background: none;      /* Remove grey background */
-        padding: 0;            /* Remove padding */
-        border-radius: 0;
-        
-        /* 3. Style it as a clean Subtitle */
-        font-size: 0.8rem;
-        color: var(--magma-orange); /* Make it pop (Orange) OR use #888 for subtle grey */
-        font-weight: 500;
-        letter-spacing: 0.5px;
-        display: block;        /* Ensure it takes its own line */
-    }
-    
-    /* Optional: Make the Title slightly larger to establish hierarchy */
-    .role-title {
-        font-size: 1.05rem;
-        line-height: 1.2;
-    }
+    .role-block .entry-header { flex-direction: column; align-items: flex-start; gap: 4px; margin-bottom: 8px; }
+    .role-block .date-tag { background: none; padding: 0; border-radius: 0; font-size: 0.8rem; color: var(--magma-orange); font-weight: 500; letter-spacing: 0.5px; display: block; }
+    .role-title { font-size: 1.05rem; line-height: 1.2; }
+    li::marker { font-size: 1em; line-height: 1; }
+    li { line-height: 1.45; margin-bottom: 10px; font-size: 0.9rem; }
 }
+
+/* Hints/Extras */
+.close-hint-bar { text-align: center; font-size: 0.75rem; color: #999; text-transform: uppercase; letter-spacing: 1px; padding: 8px 0; margin-bottom: 15px; border-bottom: 1px dashed #eee; user-select: none; }
+@media (prefers-color-scheme: dark) { .close-hint-bar { color: #777; border-bottom-color: #333; } }
