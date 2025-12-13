@@ -415,7 +415,18 @@ li { margin-bottom: 8px; font-size: 0.95rem; color: #4b5563; }
 .log-entry.active .log-body { max-height: 80vh; opacity: 1; padding: 25px 20px; overflow-y:auto;}
 
 .log-date { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed var(--ice-blue); }
-.log-content { font-size: 0.95rem; line-height: 1.7; color: #4b5563; }
+
+.log-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    
+    /* UPDATED MARGIN: 'auto' on left/right centers the block */
+    margin: 20px auto; 
+    
+    border: 1px solid var(--border-line);
+    display: block;
+}
 
 /* When active, the post becomes a full-screen overlay */
 .log-entry.active {
@@ -513,3 +524,45 @@ li { margin-bottom: 8px; font-size: 0.95rem; color: #4b5563; }
 /* Hints/Extras */
 .close-hint-bar { text-align: center; font-size: 0.75rem; color: #999; text-transform: uppercase; letter-spacing: 1px; padding: 8px 0; margin-bottom: 15px; border-bottom: 1px dashed #eee; user-select: none; }
 @media (prefers-color-scheme: dark) { .close-hint-bar { color: #777; border-bottom-color: #333; } }
+
+/* --- FORCE IMAGE CENTERING --- */
+
+/* 1. Target the Javascript-generated container */
+.log-img-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;  /* Centers child items horizontally */
+    justify-content: center !important;
+    width: 100%;
+    margin: 25px 0;
+    text-align: center; /* Fallback */
+}
+
+/* 2. Target the image specifically inside that container */
+.log-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    border: 1px solid var(--border-line);
+    display: block; /* Removes inline behaviors */
+}
+
+/* 3. Target ANY image inside the blog content text (The "Nuclear Option") */
+.log-content img {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--border-line);
+}
+
+/* 4. Center the caption text if it exists */
+.log-caption {
+    text-align: center;
+    width: 100%;
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 8px;
+    font-style: italic;
+}
