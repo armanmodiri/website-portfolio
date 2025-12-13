@@ -178,16 +178,28 @@ function loadSidebarPosts() {
 }
 
 // --- MODAL CONTROLS ---
+
+// Variable to store the scroll position
+let scrollPosition = 0;
+
 function toggleModal() {
     const modal = document.getElementById("sys-modal");
     
     if (!modal.classList.contains("show")) {
-        // OPEN MODAL
+        // --- OPEN MODAL ---
+        
+        // 1. Capture current scroll position
+        scrollPosition = window.scrollY;
+        
+        // 2. Physically freeze the body by fixing its position
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollPosition}px`;
+        document.body.style.width = '100%'; // Prevent content shifting
+        
+        // 3. Show the Modal
         modal.style.display = "flex";
         
-        // 1. FREEZE BACKGROUND SCROLLING
-        document.body.style.overflow = "hidden"; 
-        
+        // Update counters if needed
         const count = document.getElementById("counter-display").innerText;
         const modalCountDisplay = document.getElementById("modal-count-display");
         if (modalCountDisplay) {
@@ -197,12 +209,14 @@ function toggleModal() {
         setTimeout(() => {
             modal.classList.add("show");
         }, 10);
+
     } else {
         closeModal();
     }
 }
 
 function closeModal(e) {
+    // Check if clicked outside
     if (e && e.target.className !== "modal-backdrop" && e.target.className !== "close-btn") {
         return; 
     }
@@ -210,10 +224,18 @@ function closeModal(e) {
     const modal = document.getElementById("sys-modal");
     modal.classList.remove("show");
     
-    document.body.style.overflow = ""; 
-
-    // CHANGE THIS: 400 -> 200
     setTimeout(() => {
         modal.style.display = "none";
+        
+        // --- CLOSE MODAL ---
+        
+        // 1. Unfreeze the body
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        
+        // 2. Restore scroll position instantly
+        window.scrollTo(0, scrollPosition);
+        
     }, 200); 
 }

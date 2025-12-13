@@ -22,12 +22,19 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* --- ADDED FOR MOBILE SCROLL LOCK FIX --- */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* Prevent horizontal scroll only */
+}
+
 body {
     font-family: 'Inter', sans-serif;
     color: var(--slate-text);
     min-height: 100vh;
-    overflow-x: hidden;
-    overflow-y: auto;
+    /* overflow properties handled in html, body block above */
     display: flex;
     line-height: 1.5;
     background-color: var(--carbon-bg);
@@ -237,19 +244,20 @@ body {
 
 .modal-backdrop {
     display: none;
-    position: fixed;
+    position: fixed; /* Must be fixed */
     top: 0;
     left: 0;
-    width: 100vw;       /* Changed to 100vw to be explicit */
-    height: 100dvh;     /* <--- THE FIX: Dynamic Viewport Height */
+    right: 0;
+    bottom: 0;
+    /* Remove height: 100dvh or 100% - let top/bottom handle it */
     background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    z-index: 1000;
+    z-index: 9999; /* Ensure it is higher than everything else */
     align-items: center;
     justify-content: center;
     overscroll-behavior: contain;
-    transition: opacity 0.2s ease, visibility 0.2s ease;
+    transition: opacity 0.2s ease;
     opacity: 0;
 }
 
