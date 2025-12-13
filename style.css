@@ -236,12 +236,20 @@ body {
 #counter-display { font-size: 1.4rem; font-weight: 700; color: var(--slate-text); line-height: 1; }
 
 /* MODAL */
-.modal-backdrop { 
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    z-index: 1000; display: flex; align-items: center; justify-content: center;
-    opacity: 0; visibility: hidden; pointer-events: none;
-    background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px);
-    transition: all 0.4s ease;
+.modal-backdrop {
+    display: none; /* Hidden by default */
+    position: fixed; /* CRITICAL: Locks it to the viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* Covers the whole screen */
+    background: rgba(255, 255, 255, 0.4); /* Glass effect */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1000; /* Stays on top of everything */
+    align-items: center;
+    justify-content: center;
+    overscroll-behavior: contain; /* Prevents scroll chaining to body */
 }
 
 .modal-backdrop.show { opacity: 1; visibility: visible; pointer-events: auto; }
