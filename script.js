@@ -65,21 +65,16 @@ function switchTab(tabName) {
 
 // --- OPEN SPECIFIC POST (DEEP LINKING) ---
 function openPost(id) {
-    // 1. Switch to the blog tab
     switchTab('blog');
-
-    // 2. Find the specific post element
     const targetPost = document.getElementById(`post-${id}`);
     
     if (targetPost) {
-        // 3. Open it (if not already open)
         if (!targetPost.classList.contains('active')) {
-            targetPost.classList.add('active');
+            togglePost(targetPost);
         }
         
-        // 4. Scroll with OFFSET (The Fix)
         setTimeout(() => {
-            const headerOffset = 80; // Breathing room (px)
+            const headerOffset = 80; 
             const elementPosition = targetPost.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.scrollY - headerOffset;
         
@@ -92,58 +87,87 @@ function openPost(id) {
 }
 
 // --- ACCORDION BLOG LOADER ---
+
 function loadBlogPosts() {
     const blogContainer = document.getElementById("blog-feed-container");
     fetch("posts.json")
         .then(response => response.json())
         .then(posts => {
-            blogContainer.innerHTML = "";
-            posts.forEach((post) => {
-                let imageHTML = "";
-                if (post.image) {
-                    imageHTML = `
-                        <div class="log-img-container">
-                            <img src="${post.image}" alt="Post Image" class="log-img">
-                            ${post.imageCaption ? `<div class="log-caption">${post.imageCaption}</div>` : ''}
-                        </div>
-                    `;
-                }
-
-                const article = document.createElement("div");
-                article.className = "log-entry";
-                
-                // NEW: Assign a unique ID to each post so we can find it later
-                article.id = `post-${post.id}`;
-                
-                article.onclick = function() {
-                    this.classList.toggle("active");
-                };
-
-                article.innerHTML = `
-                    <div class="log-header">
-                        <span class="log-title">${post.title}</span>
-                        <span class="log-icon">+</span>
-                    </div>
-                    <div class="log-body">
-                        <span class="log-date">${post.date}</span>
-                        ${imageHTML}
-                        <div class="log-content">${post.content}</div>
-                    </div>
-                `;
-                blogContainer.appendChild(article);
-            });
-
-            // NEW: Check URL for ?post=ID and open it automatically
-            const urlParams = new URLSearchParams(window.location.search);
-            const postId = urlParams.get('post');
-            if (postId) {
-                openPost(postId);
-            }
+            displayPosts(posts);
         })
         .catch(error => {
             console.error(error);
             blogContainer.innerHTML = "<p>Trail not found (json load error).</p>";
         });
+}
+
+function displayPosts(posts) {
+    const blogContainer = document.getElementById("blog-feed-container");
+    blogContainer.innerHTML = "";
+
+    posts.forEach((post) => {
+        let imageHTML = "";
+        if (post.image) {
+            imageHTML = `
+                <div class="log-img-container">
+                    <img src="${post.image}" alt="Post Image" class="log-img">
+                    ${post.imageCaption ? `<div class="log-caption">${post.imageCaption}</div>` : ''}
+                </div>
+            `;
+        }
+
+        const article = document.createElement("div");
+        article.className = "log-entry";
+        article.id = `post-${post.id}`;
+        
+        // Structure: Header has the title and the ICON container
+        article.innerHTML = `
+            <div class="log-header">
+                <span class="log-title">${post.title}</span>
+                <div class="log-icon">+</div> 
+            </div>
+            <div class="log-body">
+                <span class="log-date">${post.date}</span>
+                ${imageHTML}
+                <div class="log-content">${post.content}</div>
+            </div>
+        `;
+        
+        // Add click listener ONLY to the header
+        const header = article.querySelector(".log-header");
+        header.onclick = function() {
+            togglePost(article);
+        };
+
+        blogContainer.appendChild(article);
+    });
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('post');
+    if (postId) {
+        openPost(postId);
+    }
+}
+
+// --- THIS IS THE KEY FUNCTION ---
+function togglePost(element) {
+    // 1. Toggle the logic class on the Article
+    element.classList.toggle("active");
+    
+    // 2. Find the icon container
+    const icon = element.querySelector(".log-icon");
+    
+    // 3. Swap the Visuals
+    if (element.classList.contains("active")) {
+        // ACTIVE STATE: Turn into a Red Button
+        icon.classList.add("close-btn-graphic");
+        // Inject the text and the X
+        icon.innerHTML = `<span class="btn-text">Close Entry</span> <span class="btn-x">×</span>`;
+    } else {
+        // INACTIVE STATE: Go back to being a Plus sign
+        icon.classList.remove("close-btn-graphic");
+        icon.innerHTML = "+"; 
+    }
 }
 
 // --- SIDEBAR POSTS LOADER ---
@@ -162,7 +186,6 @@ function loadSidebarPosts() {
                 const item = document.createElement("div");
                 item.className = "recent-entry";
                 
-                // NEW: Updated onclick to call openPost(id)
                 item.innerHTML = `
                     <div class="recent-marker"></div>
                     <a href="#" onclick="openPost(${post.id}); return false;" class="recent-link">
@@ -179,27 +202,19 @@ function loadSidebarPosts() {
 
 // --- MODAL CONTROLS ---
 
-// Variable to store the scroll position
 let scrollPosition = 0;
 
 function toggleModal() {
     const modal = document.getElementById("sys-modal");
     
     if (!modal.classList.contains("show")) {
-        // --- OPEN MODAL ---
-        
-        // 1. Capture current scroll position
         scrollPosition = window.scrollY;
-        
-        // 2. Physically freeze the body by fixing its position
         document.body.style.position = 'fixed';
         document.body.style.top = `-${scrollPosition}px`;
-        document.body.style.width = '100%'; // Prevent content shifting
+        document.body.style.width = '100%'; 
         
-        // 3. Show the Modal
         modal.style.display = "flex";
         
-        // Update counters if needed
         const count = document.getElementById("counter-display").innerText;
         const modalCountDisplay = document.getElementById("modal-count-display");
         if (modalCountDisplay) {
@@ -216,7 +231,6 @@ function toggleModal() {
 }
 
 function closeModal(e) {
-    // Check if clicked outside
     if (e && e.target.className !== "modal-backdrop" && e.target.className !== "close-btn") {
         return; 
     }
@@ -226,16 +240,9 @@ function closeModal(e) {
     
     setTimeout(() => {
         modal.style.display = "none";
-        
-        // --- CLOSE MODAL ---
-        
-        // 1. Unfreeze the body
         document.body.style.position = '';
         document.body.style.top = '';
         document.body.style.width = '';
-        
-        // 2. Restore scroll position instantly
         window.scrollTo(0, scrollPosition);
-        
     }, 200); 
 }
