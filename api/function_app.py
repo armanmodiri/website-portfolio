@@ -4,6 +4,7 @@ import os
 import json
 from azure.data.tables import TableClient
 from azure.core.exceptions import ResourceNotFoundError
+from azure.cosmos import CosmosClient
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
@@ -76,3 +77,33 @@ def GetVisitorCount(req: func.HttpRequest) -> func.HttpResponse:
             "Error processing request",
             status_code=500
         )
+
+# --- NEW HealthCheck ROUTE ---
+
+@app.route(route="HealthCheck", methods=["GET"])
+def HealthCheck(req: func.HttpRequest) -> func.HttpResponse:
+    logging.info('Processing Table API health check.')
+    
+    # Use your existing variable name
+    connection_string = os.environ.get("COSMOS_CONNECTION_STRING")
+    table_name = "VisitorStats" 
+
+    try:
+        # 1. Initialize the TableClient
+        # The 'DefaultEndpointsProtocol' string is perfectly valid here
+        table_client = TableClient.from_connection_string(
+            conn_str=connection_string, 
+            table_name=table_name
+        )
+
+        # 2. Perform a lightweight network operation
+        # listing entities with a limit of 1 confirms the service is reachable
+        # with almost zero cost (RU usage).
+        next(table_client.list_entities(results_per_page=1), None)
+        
+        return func.HttpResponse("ok", status_code=200)
+
+    except Exception as e:
+        logging.error(f"Table API Health check failed: {str(e)}")
+        # Return 500 to trigger the UptimeRobot alert
+        return func.HttpResponse(f"error: {str(e)}", status_code=500)
